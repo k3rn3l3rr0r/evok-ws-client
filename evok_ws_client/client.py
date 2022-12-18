@@ -7,8 +7,8 @@ _LOGGER = logging.getLogger(__name__)
 
 '''Note: There are far more neuron or unipi devices that should work
    The conf types are unused for now'''
-CONF_NEURON_TYPES = ["L203", "M203", "S203"]
-supportedEvokDev = ["relay", "led", "input"]
+CONF_NEURON_TYPES = ["L203", "M103", "M203", "S203"]
+supportedEvokDev = ["relay", "led", "input", "1wdevice"]
 
 class UnipiEvokWsClient:
     """Wrapper class for connection to Unipi Neuron via EVOK and websocket"""
@@ -65,7 +65,7 @@ class UnipiEvokWsClient:
                 if device in supportedEvokDev:
                     try:
                         circuit = section["circuit"]
-                        value = section["value"]
+                        value = section["value"] if device != "1wdevice" else section["lost"]
                     except:
                         continue
 
@@ -104,11 +104,11 @@ class UnipiEvokWsClient:
 
     ''' This should be extended allow configuration of filters '''
     async def evok_register_default_filter_dev(self):
-        # Register filter to get notification changes from the contoller
+        # Register filter to get notification changes from the controller
         # Currently supported filter on device level only
         cmd = {}
         cmd["cmd"] = "filter"
-        cmd["devices"] = "relay", "led", "input"
+        cmd["devices"] = "relay", "led", "input", "1wdevice"
         cmdjson = json.dumps(cmd)
         _LOGGER.debug("Setting Filter: %s", cmdjson)
         await self._evok_send_over_ws(cmdjson)
