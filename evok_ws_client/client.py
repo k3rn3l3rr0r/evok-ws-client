@@ -60,7 +60,7 @@ class UnipiEvokWsClient:
             return message
 
         for section in message:
-            if "dev" in section.keys():
+            if isinstance(section, dict) and "dev" in section.keys():
                 device = section["dev"]
                 if device in supportedEvokDev:
                     try:
