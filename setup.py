@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
         name='evok-ws-client',
-        version='0.0.1',
+        version='0.0.2',
         description='Client for connectin to Unipi devices runing EVOK API via websockets',
         author="Marko Vaupotic",
         url='https://github.com/marko2276/evok-ws-client',
